@@ -9,7 +9,7 @@ It then adds each event into Apple Reminders using AppleScript.
 - Python 3.13
 - Apple Reminders
 
-After installing Python, clone the repository and run `pip install -r requirements.txt`.
+After installing Python, clone the repository and run `pip3 install -r requirements.txt`.
 
 ## How to Use
 

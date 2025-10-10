@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 import subprocess
 
-def get_path() -> str:
+def get_path():
     """Collects the path of the ics file and returns an error if the path is invalid"""
     path = os.path.expanduser(input("Enter the .ics file path\n").strip())
     if os.path.exists(path):
