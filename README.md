@@ -23,7 +23,7 @@ Go to Canvas, then Calendar, then click Calendar Feed, then click "Click to view
 
 ### Step 3
 
-Run the program, and then paste the full file path of the file you just downloaded.
+Run the program (Change directory to src and run `python3 main.py`), and then paste the full file path of the file you just downloaded.
 
 ### Step 4
 
