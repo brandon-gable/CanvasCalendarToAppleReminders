@@ -31,4 +31,8 @@ Type in the date you want the program to add reminders through. Enter it in the 
 
 ### Step 5
 
+Type "Y" to include the Course Information in each reminder or "N" to remove this information.
+
+### Step 6
+
 Wait a little bit and the reminders should appear in your "Canvas" list.

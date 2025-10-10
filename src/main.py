@@ -25,6 +25,8 @@ def get_upcoming(cal, last_date):
     titles = []
     start_dates = []
     
+    include_course_codes = input("Do you want to include the courses in the name of each reminder?\nEnter Y or N.\n")
+    
     for event in cal.walk("VEVENT"):
         dtstart = event.get("dtstart").dt
         if isinstance(dtstart, datetime):
@@ -32,11 +34,16 @@ def get_upcoming(cal, last_date):
         else:
             event_date = dtstart
         if last_date >= event_date >= today:
-            summary = str(event.get("summary"))
-            titles.append(summary)
+            if include_course_codes == 'N':
+                summary = str(event.get("summary"))
+                start = summary.find('[')
+                new_summary = summary[:start]
+                titles.append(new_summary)
+            elif include_course_codes == 'Y':
+                summary = str(event.get("summary"))
+                titles.append(summary)
             start_dates.append(dtstart)
     return titles, start_dates
-    
         
 def get_cutoff_date():
     """Asks for last date to include"""
@@ -67,7 +74,6 @@ def create_reminder(index, title, dt):
 def main():
     path = get_path()
     cutoff = get_cutoff_date()
-    print("\nAdding reminders:\n")
     cal = load_cal(path)
     event_titles_list, event_start_dates_list = get_upcoming(cal, cutoff)
     if not event_titles_list:
