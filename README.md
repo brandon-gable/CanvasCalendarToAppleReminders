@@ -4,11 +4,18 @@ Takes input of a path for the Canvas calendar ics file, and an end date to stop 
 It then adds each event into Apple Reminders using AppleScript.
 (MacOS Only)
 
+## Prerequisites
+
+- Python 3.13
+- Apple Reminders
+
+After installing Python, clone the repository and run `pip install -r requirements.txt`.
+
 ## How to Use
 
 ### Step 1
 
-Create a list in Apple Reminders called "Canvas". If you prefer a different name for the list, edit main.py.
+Create a list in Apple Reminders called "Canvas". If you prefer a different name for the list, edit `main.py`.
 
 ### Step 2
 
