@@ -5,7 +5,7 @@ import subprocess
 
 def get_path() -> str:
     """Collects the path of the ics file and returns an error if the path is invalid"""
-    path = input("Enter the .ics file path\n").strip()
+    path = os.path.expanduser(input("Enter the .ics file path\n").strip())
     if os.path.exists(path):
         return path
     else:
@@ -67,6 +67,7 @@ def create_reminder(index, title, dt):
 def main():
     path = get_path()
     cutoff = get_cutoff_date()
+    print("\nAdding reminders:\n")
     cal = load_cal(path)
     event_titles_list, event_start_dates_list = get_upcoming(cal, cutoff)
     if not event_titles_list:

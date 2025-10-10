@@ -23,7 +23,7 @@ Go to Canvas, then Calendar, then click Calendar Feed, then click "Click to view
 
 ### Step 3
 
-Run the program, and then paste the full file path of the file you just downloaded (Do not use ~ for the user directory).
+Run the program, and then paste the full file path of the file you just downloaded.
 
 ### Step 4
 
