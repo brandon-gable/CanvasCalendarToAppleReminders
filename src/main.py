@@ -1,6 +1,7 @@
 from icalendar import Calendar
 import os
 from datetime import datetime
+import subprocess
 
 def get_path() -> str:
     """Collects the path of the ics file and returns an error if the path is invalid"""
@@ -11,11 +12,10 @@ def get_path() -> str:
         raise FileNotFoundError("File path invalid\n")
     
 today = datetime.now().date()
-reminder_list = "Canvas" # Change this if different
 
 def load_cal(path: str):
     """Parses calendar file"""
-    file = open(path)
+    file = open(path, "rb")
     data = file.read()
     file.close()
     return Calendar.from_ical(data)
@@ -47,15 +47,41 @@ def get_cutoff_date():
     except:
         raise ValueError("Improper date format")
     
+reminders_list = 'Canvas' # Change this if different
+
+def create_reminder(index, title, dt):
+    """Adds the reminders to Apple Reminders"""
+    safe_title = title.replace('"', '\\"')
+    if isinstance(dt, datetime):
+        dt_val = dt.date()
+    else:
+        dt_val = dt
+    dt_str = dt_val.strftime("%B %d, %Y")
+    reminder = "r_" + str(index)
+    script = ""
+    script += "set " + reminder + " to (make new reminder at end of reminders of theList)\n"
+    script += "set name of " + reminder + " to \"" + safe_title + "\"\n"
+    script += "set due date of " + reminder + " to date \"" + dt_str + "\"\n"
+    return script
+
 def main():
     path = get_path()
     cutoff = get_cutoff_date()
     cal = load_cal(path)
-    event_titles_list = get_upcoming(cal, cutoff)
-    event_start_dates_list = get_upcoming(cal, cutoff)
-    for i in range(0, len(event_titles_list)):
-        print(str(event_titles_list[i]) + " " + str(event_start_dates_list[i]))
-        i += 1
+    event_titles_list, event_start_dates_list = get_upcoming(cal, cutoff)
+    if not event_titles_list:
+        return 0
+    applescript = 'tell Application "Reminders"\n'
+    applescript += 'set theList to list "' + reminders_list.replace('"', '\\"') + '"\n'
+    for i in range(len(event_titles_list)):
+        applescript += create_reminder(i, event_titles_list[i], event_start_dates_list[i])
+    applescript += 'end tell\n'
+    try:
+        subprocess.run(["osascript", "-"], input=applescript, text=True, check=True)
+    except subprocess.CalledProcessError as e:
+        print("osascript failed:\n", e.stderr)
+        return 1
+    print("Created " + str(len(event_titles_list)) + " reminders\n")
     return 0
-        
+
 main()
